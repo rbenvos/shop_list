@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.db.models import Q
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from django.http import Http404
-from models import User, Product
-from serializers import UserSerializer, ProductSerializer
-from django.shortcuts import get_object_or_404
+from shop_list_app2.models import User, Product
+from shop_list_app2.serializers import UserSerializer, ProductSerializer
 from rest_framework import status
 
 

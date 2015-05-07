@@ -1,6 +1,5 @@
-from django.conf.urls import patterns, url, include
-import views
-from api import UserListAPI, ProductListAPI, UserDetailAPI, ProductDetailAPI
+from django.conf.urls import patterns, url
+from shop_list_app2.api import UserListAPI, ProductListAPI, UserDetailAPI, ProductDetailAPI
 
 
 urlpatterns = patterns('',

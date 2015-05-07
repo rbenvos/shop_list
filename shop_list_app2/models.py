@@ -3,6 +3,9 @@ from django.db import models
 # Create your models here.
 import datetime
 
+#introducir contador de cambios
+#introducir contador de productos
+
 """
 Clase usuario
 """
@@ -11,10 +14,10 @@ class User(models.Model):
     password = models.CharField(max_length=200,blank=True)
     name = models.CharField(max_length=200,blank=True)
     last_name = models.CharField(max_length=200,blank=True)
-    device = models.ForeignKey('Phone',blank=True)
+    device = models.ManyToManyField('Phone',blank=True)
     active = models.BooleanField(default=True)
     avatar = models.ImageField(blank=True)
-    friends = models.ManyToManyField("self",blank=True)
+    friends = models.ManyToManyField("User",blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
     modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
 
@@ -26,7 +29,37 @@ class User(models.Model):
         return super(User, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.email
+        return str(self.id) + " - " + self.name + " " + self.last_name
+
+    def getAllFriends(self):
+        return self.friends.all()
+    getAllFriends.short_description = 'Friends'
+
+    def getFriendsActivate(self):
+        return self.friends.all().filter(active=True)
+    getAllFriends.short_description = 'Friends Act'
+
+    def getFriendsDesactive(self):
+        return self.friends.all().filter(active=False)
+    getAllFriends.short_description = 'Friends DesAct'
+
+    def getNumFriendsActive(self):
+        return self.friends.all().filter(active=True).count()
+    getNumFriendsActive.short_description = 'Num Friends Act'
+
+    def getNumFriendsDesactive(self):
+        return self.friends.all().filter(active=False).count()
+    getNumFriendsDesactive.short_description = 'Num Friends DesAct'
+
+    def getNumAllFriends(self):
+        return self.friends.all().count()
+    getNumAllFriends.short_description = 'Num Friends'
+
+    def getDevices(self):
+        return self.device.all()
+
+    def getNumDevices(self):
+        return self.device.all().count()
 
 """
 Clase producto
@@ -42,6 +75,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
     avatar = models.ImageField(blank=True)
+    quantity = models.IntegerField(default= 0,blank=True)
     measure = models.CharField(max_length=3, choices=UNITS,blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
     modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
@@ -74,6 +108,7 @@ class Phone(models.Model):
     #Intentar meter mas datos del telefono, ver si se pueden extraer.
 
     id_device = models.CharField(max_length=200)
+    id_user=models.ManyToManyField("User",blank=True)
     active = models.BooleanField(default=True)
     os = models.CharField(max_length=3, choices=KIND_OS,blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
@@ -87,7 +122,11 @@ class Phone(models.Model):
         return super(Phone, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.id_device
+        return self.os + " " + self.id_device
+
+    def userPhone(self):
+        return self.user_set.all()
+
 
 """
 Clase listado
@@ -108,7 +147,7 @@ class Order(models.Model):
         return super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.id + " " + self.name
+        return str(self.id) + " " + self.name
 
 """
 Clase grupo
@@ -131,4 +170,4 @@ class Group(models.Model):
         return super(Group, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.id + " " + self.name
+        return str(self.id) + " " + self.name

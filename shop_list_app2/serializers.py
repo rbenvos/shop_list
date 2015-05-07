@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from models import User, Product
+from shop_list_app2.models import User, Product
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
