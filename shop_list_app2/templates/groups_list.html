@@ -7,15 +7,15 @@
 <body>
     <h1>Groups</h1>
     <h2>Lists</h2>
-    {% if group_list %}
+    {% if groups_list %}
         <ul>
-        {% for group in group_list %}
+        {% for group in groups_list %}
             <a href="/shop_list2/groups/{{group.id}}"><li><h4>{{ group.id}} - {{ group.name}}</h4></li><a/>
         {% endfor %}
         </ul>
     {% else %}
         <p>No groups are available.</p>
     {% endif %}
-    </div>
+    <a href="/shop_list2">Atrás</a>
 </body>
 </html>

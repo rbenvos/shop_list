@@ -9,19 +9,19 @@
 
     <nav>
     <ul>
-        <li><a title="Users" href="/shop_list2/users">Opción 1</a></li>
-        <li><a title="Groups" href="/shop_list2/groups">Opción 2</a></li>
-        <li><a title="Devices" href="/shop_list2/devices">Opción 3</a></li>
-        <li><a title="Orders" href="/shop_list2/orders">Opción 4</a></li>
-        <li><a title="Products" href="/shop_list2/products">Opción 5</a></li>
+        <li><a title="Users" href="/shop_list2/users">Users</a></li>
+        <li><a title="Groups" href="/shop_list2/groups">Groups</a></li>
+        <li><a title="Devices" href="/shop_list2/devices">Devices</a></li>
+        <li><a title="Orders" href="/shop_list2/orders">Orders</a></li>
+        <li><a title="Products" href="/shop_list2/products">Products</a></li>
     </ul>
     </nav>
 
     <div>
     <h2>Users List</h2>
-    {% if user_list %}
+    {% if db_users_list %}
         <ul>
-        {% for user in user_list %}
+        {% for user in db_users_list %}
             <li><h4>{{ user.id}} - {{ user.name}}</h4></li>
         {% endfor %}
         </ul>
@@ -32,9 +32,9 @@
 
     <div>
     <a href="/shop_list2/groups"><h2>Group List</h2></a>
-    {% if group_list %}
+    {% if db_groups_list %}
         <ul>
-        {% for group in group_list %}
+        {% for group in db_groups_list %}
             <a href="/shop_list2/groups/{{group.id}}"><li><h4>{{ group.id}} - {{ group.name}}</h4></li><a/>
         {% endfor %}
         </ul>
@@ -42,6 +42,46 @@
         <p>No groups are available.</p>
     {% endif %}
     </div>
+
+    <div>
+    <a href="/shop_list2/devices"><h2>Device List</h2></a>
+    {% if db_devices_list %}
+        <ul>
+        {% for phone in db_devices_list %}
+            <a href="/shop_list2/devices/{{phone.id}}"><li><h4>{{ phone.id}} - {{ phone.name}}</h4></li><a/>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No devices are available.</p>
+    {% endif %}
+    </div>
+
+    <div>
+    <a href="/shop_list2/orders"><h2>Order List</h2></a>
+    {% if db_orders_list %}
+        <ul>
+        {% for order in db_orders_list %}
+            <a href="/shop_list2/orders/{{order.id}}"><li><h4>{{ order.id}} - {{ order.name}}</h4></li><a/>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No order are available.</p>
+    {% endif %}
+    </div>
+
+    <div>
+    <a href="/shop_list2/products"><h2>Product List</h2></a>
+    {% if db_products_list %}
+        <ul>
+        {% for product in db_products_list %}
+            <a href="/shop_list2/products/{{product.id}}"><li><h4>{{ product.id}} - {{ product.name}}</h4></li><a/>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products are available.</p>
+    {% endif %}
+    </div>
+
 
 </body>
 </html>

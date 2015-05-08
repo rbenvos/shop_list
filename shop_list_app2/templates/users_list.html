@@ -5,18 +5,17 @@
     <title></title>
 </head>
 <body>
-    <h1>Group {{group_detail}}</h1>
-    <h4>{{group_detail.active}}</h4>
-    <h2>User</h2>
-    {% if group_detail %}
+    <h1>Users</h1>
+    {% if users_list %}
         <ul>
-        {% for user in group_detail.users.all %}
-            <li><h4>{{ user.id}} - {{ user.name}}</h4></li>
+        {% for user in users_list %}
+            <a href="/shop_list2/users/{{user.id}}"><li><h4>{{ user.id}} - {{ user.name}}</h4></li><a/>
         {% endfor %}
         </ul>
     {% else %}
         <p>No users are available.</p>
     {% endif %}
+    </div>
     <a href="/shop_list2">Atrás</a>
 </body>
 </html>
