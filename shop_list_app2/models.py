@@ -57,9 +57,20 @@ class User(models.Model):
 
     def getDevices(self):
         return self.device.all()
+    getDevices.short_description = 'Devices'
 
     def getNumDevices(self):
         return self.device.all().count()
+    getNumDevices.short_description = 'Num devices'
+
+    def getGroups(self):
+        return self.group_set.all()
+    getGroups.short_description = 'Groups'
+
+    def getNumGroups(self):
+        return self.group_set.all().count()
+    getNumGroups.short_description = 'Num groups'
+
 
 """
 Clase producto
@@ -108,7 +119,6 @@ class Phone(models.Model):
     #Intentar meter mas datos del telefono, ver si se pueden extraer.
 
     id_device = models.CharField(max_length=200)
-    id_user=models.ManyToManyField("User",blank=True)
     active = models.BooleanField(default=True)
     os = models.CharField(max_length=3, choices=KIND_OS,blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
@@ -126,7 +136,7 @@ class Phone(models.Model):
 
     def userPhone(self):
         return self.user_set.all()
-
+    userPhone.short_description = "User"
 
 """
 Clase listado
@@ -149,6 +159,18 @@ class Order(models.Model):
     def __unicode__(self):
         return str(self.id) + " " + self.name
 
+    def orderProducts(self):
+        return self.products.all()
+    orderProducts.short_description = "Products"
+
+    def orderNumProducts(self):
+        return self.products.all().count()
+    orderProducts.short_description = "Num Products"
+
+    def getGroups(self):
+        return self.group_set.all()
+    getGroups.short_description = 'Groups'
+
 """
 Clase grupo
 """
@@ -156,7 +178,7 @@ Clase grupo
 class Group(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
-    id_order = models.ForeignKey("Order",blank=True)
+    orders = models.ManyToManyField("Order",blank=True)
     avatar = models.ImageField(blank=True)
     users = models.ManyToManyField("User",blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
@@ -171,3 +193,11 @@ class Group(models.Model):
 
     def __unicode__(self):
         return str(self.id) + " " + self.name
+
+    def groupUsers(self):
+        return self.users.all()
+    groupUsers.short_description = "Users"
+
+    def groupOrders(self):
+        return self.orders.all()
+    groupOrders.short_description = "Orders"
