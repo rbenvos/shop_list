@@ -134,9 +134,13 @@ class Phone(models.Model):
     def __unicode__(self):
         return self.os + " " + self.id_device
 
-    def userPhone(self):
+    def users(self):
         return self.user_set.all()
-    userPhone.short_description = "User"
+    users.short_description = "User"
+
+    def numUsers(self):
+        return self.user_set.all().count()
+    numUsers.short_description = "Num User"
 
 """
 Clase listado

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    {% include 'menu.html' %}
+    <h2>{{device_detail.id_device}}</h2>
+    <h3>{{device_detail.os}}</h3>
+    <p>Active: {{device_detail.active}}</p>
+    <p>{{device_detail.created_at}}</p>
+    <p>{{device_detail.modified_at}}</p>
+
+
+    <h3>Users</h3>
+    {%if users %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Avatar</td>
+                <td>Nombre</td>
+                <td>Apellido</td>
+                <td>Email</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for user in users %}
+            <tr>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.id}}</a></td>
+                <td>{{ user.active}}</td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.avatar}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.last_name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.email}}</a></td>
+                <td>{{ user.created_at}}</td>
+                <td>{{ user.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay usuarios</a>
+    {% endif %}
+
+    <br>
+    <a href="/shop_list2/orders">Atrás</a>
+</body>
+</html>

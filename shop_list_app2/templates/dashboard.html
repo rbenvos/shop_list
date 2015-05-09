@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
+{% include 'head.html' %}
 <body>
-    <h1>Dashboard</h1>
+    {% include 'menu.html' %}
 
-    <nav>
-    <ul>
-        <li><a title="Users" href="/shop_list2/users">Users</a></li>
-        <li><a title="Groups" href="/shop_list2/groups">Groups</a></li>
-        <li><a title="Devices" href="/shop_list2/devices">Devices</a></li>
-        <li><a title="Orders" href="/shop_list2/orders">Orders</a></li>
-        <li><a title="Products" href="/shop_list2/products">Products</a></li>
-    </ul>
-    </nav>
+    <div class="container-fluid">
+    <h1 class="col-md-12">Dashboard</h1>
 
-    <div>
-    <h2>Users List</h2>
+    <div class="row">
+    <div class="col-md-2">
+     <a href="/shop_list2/users"><h3>User List</h3></a>
+     <a class="btn btn-default" href="/shop_list2/users/new">Add user</a>
     {% if db_users_list %}
         <ul>
         {% for user in db_users_list %}
-            <li><h4>{{ user.id}} - {{ user.name}}</h4></li>
+            <a href="/shop_list2/users/{{user.id}}"><li>{{ user.id}} - {{ user.name}}</li></a>
         {% endfor %}
         </ul>
     {% else %}
@@ -30,12 +22,12 @@
     {% endif %}
     </div>
 
-    <div>
-    <a href="/shop_list2/groups"><h2>Group List</h2></a>
+    <div class="col-md-2">
+    <a href="/shop_list2/groups"><h3>Group List</h3></a>
     {% if db_groups_list %}
         <ul>
         {% for group in db_groups_list %}
-            <a href="/shop_list2/groups/{{group.id}}"><li><h4>{{ group.id}} - {{ group.name}}</h4></li><a/>
+            <a href="/shop_list2/groups/{{group.id}}"><li>{{ group.id}} - {{ group.name}}</li><a/>
         {% endfor %}
         </ul>
     {% else %}
@@ -43,12 +35,12 @@
     {% endif %}
     </div>
 
-    <div>
-    <a href="/shop_list2/devices"><h2>Device List</h2></a>
+    <div class="col-md-2">
+    <a href="/shop_list2/devices"><h3>Device List</h3></a>
     {% if db_devices_list %}
         <ul>
         {% for phone in db_devices_list %}
-            <a href="/shop_list2/devices/{{phone.id}}"><li><h4>{{ phone.id}} - {{ phone.name}}</h4></li><a/>
+            <a href="/shop_list2/devices/{{phone.id}}"><li>{{ phone.id}} - {{ phone.id_device}}</li><a/>
         {% endfor %}
         </ul>
     {% else %}
@@ -56,12 +48,12 @@
     {% endif %}
     </div>
 
-    <div>
-    <a href="/shop_list2/orders"><h2>Order List</h2></a>
+    <div class="col-md-2">
+    <a href="/shop_list2/orders"><h3>Order List</h3></a>
     {% if db_orders_list %}
         <ul>
         {% for order in db_orders_list %}
-            <a href="/shop_list2/orders/{{order.id}}"><li><h4>{{ order.id}} - {{ order.name}}</h4></li><a/>
+            <a href="/shop_list2/orders/{{order.id}}"><li>{{ order.id}} - {{ order.name}}</li><a/>
         {% endfor %}
         </ul>
     {% else %}
@@ -69,12 +61,12 @@
     {% endif %}
     </div>
 
-    <div>
-    <a href="/shop_list2/products"><h2>Product List</h2></a>
+    <div class="col-md-2">
+    <a href="/shop_list2/products"><h3>Product List</h3></a>
     {% if db_products_list %}
         <ul>
         {% for product in db_products_list %}
-            <a href="/shop_list2/products/{{product.id}}"><li><h4>{{ product.id}} - {{ product.name}}</h4></li><a/>
+            <a href="/shop_list2/products/{{product.id}}"><li>{{ product.id}} - {{ product.name}}</li><a/>
         {% endfor %}
         </ul>
     {% else %}
@@ -82,6 +74,8 @@
     {% endif %}
     </div>
 
+    </div>
 
+    </div>
 </body>
 </html>

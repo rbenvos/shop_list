@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    {% include 'menu.html' %}
+    <h1>Groups</h1>
+
+    <div>
+    <h3>Crear grupo</h3>
+    {{ message|safe }}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear grupo</button>
+    </form>
+    </div>
+
+
+    {% if groups_list %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Avatar</td>
+                <td>Nombre</td>
+                <td>Num Usuarios</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for group in groups_list %}
+            <tr>
+                <td><a href="/shop_list2/groups/{{group.id}}">{{ group.id}}</a></td>
+                <td>{{ group.active}}</td>
+                <td><a href="/shop_list2/groups/{{group.id}}">{{ group.avatar}}</a></td>
+                <td><a href="/shop_list2/groups/{{group.id}}">{{ group.name}}</a></td>
+                <td><a href="/shop_list2/groups/{{group.id}}">{{ group.users.all.count}}</a></td>
+                <td>{{ group.created_at}}</td>
+                <td>{{ group.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No groups are available.</p>
+    {% endif %}
+    <a href="/shop_list2">Atrás</a>
+</body>
+</html>

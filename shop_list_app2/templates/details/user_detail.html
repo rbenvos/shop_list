@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    {% include 'menu.html' %}
+    <a>User {{user_detail.id}}</a>
+    <h2>{{user_detail.name}}</h2>
+    <h3>{{user_detail.last_name}}</h3>
+    <p>{{user_detail.avatar}}</p>
+    <p>{{user_detail.email}}</p>
+    <p>Active:{{user_detail.active}}</p>
+    <p>{{user_detail.created_at}}</p>
+    <p>{{user_detail.modified_at}}</p>
+
+
+    <h3>Devices</h3>
+    {%if user_detail.device.all %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Id device</td>
+                <td>Os</td>
+                <td>Usuario</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for phone in user_detail.device.all %}
+            <tr>
+                <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id}}</a></td>
+                <td>{{ phone.active}}</td>
+                <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id_device}}</a></td>
+                <td>{{ phone.os}}</td>
+                {% for user in phone.user_set.all %}
+                    <td><a href="/shop_list2/users/{{user.id}}">{{user.name}} {{user.last_name}}</a></td>
+                {% endfor %}
+                <td>{{ phone.created_at}}</td>
+                <td>{{ phone.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay dispositivos</a>
+    {% endif %}
+
+    <h3>Friends</h3>
+    {%if user_detail.friends.all %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Avatar</td>
+                <td>Nombre</td>
+                <td>Apellido</td>
+                <td>Email</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for user in user_detail.friends.all %}
+            <tr>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.id}}</a></td>
+                <td>{{ user.active}}</td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.avatar}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.last_name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.email}}</a></td>
+                <td>{{ user.created_at}}</td>
+                <td>{{ user.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay amigos</a>
+    {% endif %}
+
+    <br>
+    <a href="/shop_list2/users">Atrás</a>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    {% include 'menu.html' %}
+    <h2>{{group_detail.name}}</h2>
+    <h3>{{group_detail.avatar}}</h3>
+    <p>Active: {{group_detail.active}}</p>
+    <p>{{group_detail.created_at}}</p>
+    <p>{{group_detail.modified_at}}</p>
+
+
+    <h3>Users</h3>
+    {%if group_detail.users.all %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Avatar</td>
+                <td>Nombre</td>
+                <td>Apellido</td>
+                <td>Email</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for user in group_detail.users.all %}
+            <tr>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.id}}</a></td>
+                <td>{{ user.active}}</td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.avatar}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.last_name}}</a></td>
+                <td><a href="/shop_list2/users/{{user.id}}">{{ user.email}}</a></td>
+                <td>{{ user.created_at}}</td>
+                <td>{{ user.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay usuarios</a>
+    {% endif %}
+
+    <h3>Orders</h3>
+    {%if group_detail.orders.all %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Nombre</td>
+                <td>Products</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for order in group_detail.orders.all %}
+            <tr>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.id}}</a></td>
+                <td>{{ order.active}}</td>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.name}}</a></td>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.products.all.count}}</a></td>
+                <td>{{ order.created_at}}</td>
+                <td>{{ order.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay listados</a>
+    {% endif %}
+
+    <br>
+    <a href="/shop_list2/orders">Atrás</a>
+</body>
+</html>

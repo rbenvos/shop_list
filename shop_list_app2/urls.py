@@ -7,11 +7,11 @@ urlpatterns = patterns('',
     url(r'^$', views.dashboard, name='dashboard'),
 
     #Menu
-    url(r'^users/$', views.users_list_view, name='users_list_view'),
-    url(r'^groups/$', views.groups_list_view, name='groups_list_view'),
-    url(r'^devices/$', views.devices_list_view, name='devices_list_view'),
-    url(r'^orders/$', views.orders_list_view, name='orders_list_view'),
-    url(r'^products/$', views.products_list_view, name='products_list_view'),
+    url(r'^users/$', views.NewUserView.as_view(), name='users_list_view'),
+    url(r'^groups/$', views.NewGroupView.as_view(), name='groups_list_view'),
+    url(r'^devices/$', views.NewDeviceView.as_view(), name='devices_list_view'),
+    url(r'^orders/$', views.NewOrderView.as_view(), name='orders_list_view'),
+    url(r'^products/$', views.NewProductView.as_view(), name='products_list_view'),
 
     #Detalle
     url(r'^users/(?P<pk>[0-9]+)$', views.user_detail_view, name='user_detail_view'),

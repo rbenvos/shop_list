@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    {% include 'menu.html' %}
+    <h1>Orders</h1>
+
+    <div>
+    <h3>Crear listado</h3>
+    {{ message|safe }}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear listado</button>
+    </form>
+    </div>
+
+
+    {% if orders_list %}
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Nombre</td>
+                <td>Num Products</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for order in orders_list %}
+            <tr>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.id}}</a></td>
+                <td>{{ order.active}}</td>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.name}}</a></td>
+                <td><a href="/shop_list2/orders/{{order.id}}">{{ order.products.all.count}}</a></td>
+                <td>{{ order.created_at}}</td>
+                <td>{{ order.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No orders are available.</p>
+    {% endif %}
+    <a href="/shop_list2">Atrás</a>
+</body>
+</html>
