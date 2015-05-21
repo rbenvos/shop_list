@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
+{% include 'header.html' %}
 
-    <div class="container-fluid">
     <h1 class="col-md-12">Dashboard</h1>
 
     <div class="row">
     <div class="col-md-2">
      <a href="/shop_list2/users"><h3>User List</h3></a>
-     <a class="btn btn-default" href="/shop_list2/users/new">Add user</a>
     {% if db_users_list %}
         <ul>
         {% for user in db_users_list %}
@@ -62,6 +56,21 @@
     </div>
 
     <div class="col-md-2">
+    <a href="/shop_list2/items"><h3>Items List</h3></a>
+    {% if db_items_list %}
+        <ul>
+        {% for item in db_items_list %}
+            {%for order in item.order_set.all %}
+                <a href="/shop_list2/items/{{item.id}}"><li>{{ item.id}} - {{ order.id}} - {{ item.product}}</li><a/>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No item are available.</p>
+    {% endif %}
+    </div>
+
+    <div class="col-md-2">
     <a href="/shop_list2/products"><h3>Product List</h3></a>
     {% if db_products_list %}
         <ul>
@@ -76,6 +85,4 @@
 
     </div>
 
-    </div>
-</body>
-</html>
+{% include 'footer.html' %}

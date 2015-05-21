@@ -1,48 +1,56 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
-    <h1>Devices</h1>
+{% include 'header.html' %}
 
-    <div>
-    <h3>Crear dispositivo</h3>
-    {{ message|safe }}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear dispositivo</button>
-    </form>
-    </div>
+<h1>Devices</h1>
 
-    {% if devices_list %}
-        <table>
-            <tr>
-                <td>Id</td>
-                <td>Activo</td>
-                <td>Id device</td>
-                <td>Os</td>
-                <td>Usuario</td>
-                <td>Fecha creación</td>
-                <td>Fecha modificación</td>
-            </tr>
-        {% for phone in devices_list %}
-            <tr>
-                <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id}}</a></td>
-                <td>{{ phone.active}}</td>
-                <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id_device}}</a></td>
-                <td>{{ phone.os}}</td>
+<p class="bg-success">{{ message|safe }}</p>
+
+<button class="btn btn-default button-slidedown-add">Crear</button>
+
+<div class="text-slidedown-add">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear dispositivo</button>
+</form>
+</div>
+
+{% if devices_list %}
+    <table class="table table-condensed">
+        <tr>
+            <td>Id</td>
+            <td>Activo</td>
+            <td>Id device</td>
+            <td>Os</td>
+            <td>Usuario</td>
+            <td>Fecha creación</td>
+            <td>Fecha modificación</td>
+        </tr>
+    {% for phone in devices_list %}
+        <tr>
+            <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id}}</a></td>
+            {% if device.active %}
+                <td class="success">{{ device.active}}</td>
+            {% else %}
+                <td class="danger">{{ device.active}}</td>
+            {% endif %}
+            <td><a href="/shop_list2/devices/{{phone.id}}">{{ phone.id_device}}</a></td>
+            <td>{{ phone.os}}</td>
+            {% if phone.user_set.all %}
+            <!--Poner que no si hay , que salga algun mensaje -->
                 {% for user in phone.user_set.all %}
                     <td><a href="/shop_list2/users/{{user.id}}">{{user.name}} {{user.last_name}}</a></td>
                 {% endfor %}
-                <td>{{ phone.created_at}}</td>
-                <td>{{ phone.modified_at}}</td>
-            </tr>
-        {% endfor %}
-        </table>
-    {% else %}
-        <p>No devices are available.</p>
-    {% endif %}
-    <a href="/shop_list2">Atrás</a>
-</body>
-</html>
+            {% else %}
+                <td><a href="/shop_list2/users/{{user.id}}"> - </a></td>
+            {% endif %}
+            <td>{{ phone.created_at}}</td>
+            <td>{{ phone.modified_at}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No devices are available.</p>
+{% endif %}
+<a href="/shop_list2">Atrás</a>
+
+{% include 'footer.html' %}

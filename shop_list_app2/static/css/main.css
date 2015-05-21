@@ -6,7 +6,25 @@ h1,h2,h3,h4,h5,h6{
 color:#464646;
 }
 
+.text-slidedown-add,
+.text-slidedown-modify,
+.text-slidedown-delete{
+    display:none;
+    margin-bottom:20px;
+    margin-left: -15px;
+    padding: 20px;
+    width: 102%;
+    border-top:1px #C2C2C2 solid;
+    border-bottom:1px #C2C2C2 solid;
+}
+.text-slidedown-add{background:#D3D3D3;transparent:0.5;}
+.text-slidedown-modify{background:#B1D3F4;transparent:0.5;}
+.text-slidedown-delete{background:#FEEACD;transparent:0.5;}
+.button-slidedown-add,
+.button-slidedown-modify,
+.button-slidedown-delete{margin-bottom:20px;}
 
+#user_id_detail{float:left;padding-right:10px;}
 
 /*
 Navbar

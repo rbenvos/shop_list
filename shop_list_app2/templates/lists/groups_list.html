@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
-    <h1>Groups</h1>
+{% include 'header.html' %}
+<h1>Groups</h1>
 
-    <div>
-    <h3>Crear grupo</h3>
-    {{ message|safe }}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear grupo</button>
-    </form>
-    </div>
+<p class="bg-success">{{ message|safe }}</p>
+
+<button class="btn btn-default button-slidedown-add">Crear</button>
+
+<div class="text-slidedown-add">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear grupo</button>
+</form>
+</div>
 
 
     {% if groups_list %}
-        <table>
+        <table class="table table-condensed">
             <tr>
                 <td>Id</td>
                 <td>Activo</td>
@@ -30,7 +28,11 @@
         {% for group in groups_list %}
             <tr>
                 <td><a href="/shop_list2/groups/{{group.id}}">{{ group.id}}</a></td>
-                <td>{{ group.active}}</td>
+                {% if group.active %}
+                    <td class="success">{{ group.active}}</td>
+                {% else %}
+                    <td class="danger">{{ group.active}}</td>
+                {% endif %}
                 <td><a href="/shop_list2/groups/{{group.id}}">{{ group.avatar}}</a></td>
                 <td><a href="/shop_list2/groups/{{group.id}}">{{ group.name}}</a></td>
                 <td><a href="/shop_list2/groups/{{group.id}}">{{ group.users.all.count}}</a></td>
@@ -43,5 +45,4 @@
         <p>No groups are available.</p>
     {% endif %}
     <a href="/shop_list2">Atrás</a>
-</body>
-</html>
+{% include 'footer.html' %}

@@ -1,49 +1,52 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
-    <h1>Products</h1>
+{% include 'header.html' %}
 
-    <div>
-    <h3>Crear producto</h3>
-    {{ message|safe }}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear producto</button>
-    </form>
-    </div>
+<h1>Products</h1>
+
+<p class="bg-success">{{ message|safe }}</p>
+
+<button class="btn btn-default button-slidedown-add">Crear</button>
+
+<div class="text-slidedown-add">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear producto</button>
+</form>
+</div>
 
 
-    {% if products_list %}
-        <table>
-            <tr>
-                <td>Id</td>
-                <td>Activo</td>
-                <td>Nombre</td>
-                <td>Avatar</td>
-                <td>Cantidad</td>
-                <td>Medida</td>
-                <td>Fecha creación</td>
-                <td>Fecha modificación</td>
-            </tr>
-        {% for product in products_list %}
-            <tr>
-                <td><a href="/shop_list2/products/{{order.id}}">{{ product.id}}</a></td>
-                <td>{{ product.active}}</td>
-                <td><a href="/shop_list2/products/{{order.id}}">{{ product.name}}</a></td>
-                <td><a href="/shop_list2/products/{{order.id}}">{{ product.avatar}}</a></td>
-                <td>{{ product.quantity}}</td>
-                <td>{{ product.measure}}</td>
-                <td>{{ product.created_at}}</td>
-                <td>{{ product.modified_at}}</td>
-            </tr>
-        {% endfor %}
-        </table>
-    {% else %}
-        <p>No products are available.</p>
-    {% endif %}
-    <a href="/shop_list2">Atrás</a>
-</body>
-</html>
+{% if products_list %}
+    <table class="table table-condensed">
+        <tr>
+            <td>Id</td>
+            <td>Activo</td>
+            <td>Nombre</td>
+            <td>Avatar</td>
+            <td>Cantidad</td>
+            <td>Medida</td>
+            <td>Fecha creación</td>
+            <td>Fecha modificación</td>
+        </tr>
+    {% for product in products_list %}
+        <tr>
+            <td><a href="/shop_list2/products/{{product.id}}">{{ product.id}}</a></td>
+            {% if product.active %}
+                <td class="success">{{ product.active}}</td>
+            {% else %}
+                <td class="danger">{{ product.active}}</td>
+            {% endif %}
+            <td><a href="/shop_list2/products/{{product.id}}">{{ product.name}}</a></td>
+            <td><a href="/shop_list2/products/{{product.id}}">{{ product.avatar}}</a></td>
+            <td>{{ product.quantity}}</td>
+            <td>{{ product.measure}}</td>
+            <td>{{ product.created_at}}</td>
+            <td>{{ product.modified_at}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No products are available.</p>
+{% endif %}
+<a href="/shop_list2">Atrás</a>
+
+{% include 'footer.html' %}

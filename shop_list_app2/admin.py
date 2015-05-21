@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from shop_list_app2.models import User, Product, Group, Order, Phone
+from shop_list_app2.models import User, Product, Group, Order, Phone, Item
 
 """
 Administracion User
@@ -135,10 +135,27 @@ class OrderAdmin(admin.ModelAdmin):
         }),
         ('Products information', {
             'classes' : ['wide'],
-            'fields': ['products']
+            'fields': ['items']
         }),
     )
     search_fields = ['id','name']
+    actions=['make_active','make_desactive']
+
+    def make_active(modeladmin, request, queryset):
+        queryset.update(active = True)
+    make_active.short_description = "Mark selected as active"
+
+    def make_desactive(modeladmin, request, queryset):
+        queryset.update(active = False)
+    make_desactive.short_description = "Mark selected as desactive"
+
+"""
+Administracion Order
+"""
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ['id','active','purchased','amount','product','getOrder','created_at','modified_at']
+    list_display_links = ['id']
+    list_filter = ['active','purchased','created_at','modified_at']
     actions=['make_active','make_desactive']
 
     def make_active(modeladmin, request, queryset):
@@ -154,3 +171,4 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Phone, PhoneAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Item, ItemAdmin)

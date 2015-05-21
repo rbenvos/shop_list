@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $(".button-slidedown-add").click(function(){
+            $(".text-slidedown-add").slideToggle("slow");
+        });
+    });
+
+    $(document).ready(function(){
+        $(".button-slidedown-modify").click(function(){
+            $(".text-slidedown-modify").slideToggle("slow");
+        });
+    });
+
+    $(document).ready(function(){
+        $(".button-slidedown-delete").click(function(){
+            $(".text-slidedown-delete").slideToggle("slow");
+        });
+    });
+</script>
+    </script>
+
+    {% include 'menu.html' %}
+
+    <div class="container-fluid">

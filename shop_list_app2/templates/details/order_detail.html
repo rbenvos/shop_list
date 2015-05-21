@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
-    <h1>Order {{order_detail.id}}</h1>
-    <h4>{{order_detail.name}}</h4>
+{% include 'header.html' %}
+
+    <a id="user_id_detail">Order {{order_detail.id}}</a>
+
+    <button class="btn btn-xs btn-primary button-slidedown-modify">Modificar</button>
+    <button class="btn btn-xs btn-warning button-slidedown-delete">Borrar</button>
+
+    <div class="text-slidedown-modify">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Modificar lista</button>
+    </form>
+    </div>
+
+    <div class="text-slidedown-delete">
+        <a href="/shop_list2/orders/{{order_detail.id}}/delete/">
+            <button class="btn btn-xs btn-danger">Borrar lista</button>
+        </a>
+    </div>
+
+
+    <h2>{{order_detail.name}}</h2>
+    <p>Active:{{order_detail.active}}</p>
+    <p>{{order_detail.created_at}}</p>
+    <p>{{order_detail.modified_at}}</p>
+
+
+    <h3>Items</h3>
+    {%if order_detail.items.all %}
+        <table class="table">
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Purchased</td>
+                <td>Product</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for item in order_detail.items.all %}
+            <tr>
+                <td><a href="/shop_list2/items/{{item.id}}">{{ item.id}}</a></td>
+                <td>{{ item.active}}</td>
+                <td>{{ item.purchased}}</td>
+                {% if item.product_set.all %}
+                    {% for product in item.product_set.all %}
+                        <td><a href="/shop_list2/products/{{product.id}}">{{product.name}}</a></td>
+                    {% endfor %}
+                {% else %}
+                    <td> - </td>
+                {% endif %}
+                <td>{{ item.created_at}}</td>
+                <td>{{ item.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <a>No hay items</a>
+    {% endif %}
+
+
+    <br>
     <a href="/shop_list2/orders">Atrás</a>
-</body>
-</html>
+
+{% include 'footer.html' %}

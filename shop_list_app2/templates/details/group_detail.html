@@ -1,8 +1,25 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
+{% include 'header.html' %}
+
+    <a id="user_id_detail">Group {{group_detail.id}}</a>
+
+    <button class="btn btn-xs btn-primary button-slidedown-modify">Modificar</button>
+    <button class="btn btn-xs btn-warning button-slidedown-delete">Borrar</button>
+
+    <div class="text-slidedown-modify">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Modificar grupo</button>
+    </form>
+    </div>
+
+    <div class="text-slidedown-delete">
+        <a href="/shop_list2/groups/{{group_detail.id}}/delete/">
+            <button class="btn btn-xs btn-danger">Borrar grupo</button>
+        </a>
+    </div>
+
+
     <h2>{{group_detail.name}}</h2>
     <h3>{{group_detail.avatar}}</h3>
     <p>Active: {{group_detail.active}}</p>
@@ -12,7 +29,7 @@
 
     <h3>Users</h3>
     {%if group_detail.users.all %}
-        <table>
+        <table class="table">
             <tr>
                 <td>Id</td>
                 <td>Activo</td>
@@ -42,7 +59,7 @@
 
     <h3>Orders</h3>
     {%if group_detail.orders.all %}
-        <table>
+        <table class="table">
             <tr>
                 <td>Id</td>
                 <td>Activo</td>
@@ -68,5 +85,5 @@
 
     <br>
     <a href="/shop_list2/orders">Atrás</a>
-</body>
-</html>
+
+{% include 'footer.html' %}

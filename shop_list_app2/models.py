@@ -73,21 +73,15 @@ class User(models.Model):
 
 
 """
-Clase producto
+Clase grupo
 """
 
-class Product(models.Model):
-
-    UNITS = (
-        ('kg','Kilogramos'),
-        ('l','Litros')
-    )
-
+class Group(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
+    orders = models.ManyToManyField("Order",blank=True)
     avatar = models.ImageField(blank=True)
-    quantity = models.IntegerField(default= 0,blank=True)
-    measure = models.CharField(max_length=3, choices=UNITS,blank=True)
+    users = models.ManyToManyField("User",blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
     modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
 
@@ -96,12 +90,18 @@ class Product(models.Model):
         if not self.id:
             self.created_at = datetime.datetime.today()
         self.modified_at = datetime.datetime.today()
-        return super(Product, self).save(*args, **kwargs)
+        return super(Group, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.name
+        return str(self.id) + " " + self.name
 
-    #introducir funciona para introducir nuevas unidades. -> subclase
+    def groupUsers(self):
+        return self.users.all()
+    groupUsers.short_description = "Users"
+
+    def groupOrders(self):
+        return self.orders.all()
+    groupOrders.short_description = "Orders"
 
 """
 Clase telefono
@@ -149,7 +149,7 @@ Clase listado
 class Order(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
-    products = models.ManyToManyField("Product",blank=True)
+    items = models.ManyToManyField("Item",blank=True)
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
     modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
 
@@ -164,11 +164,11 @@ class Order(models.Model):
         return str(self.id) + " " + self.name
 
     def orderProducts(self):
-        return self.products.all()
+        return self.items.all()
     orderProducts.short_description = "Products"
 
     def orderNumProducts(self):
-        return self.products.all().count()
+        return self.items.all().count()
     orderProducts.short_description = "Num Products"
 
     def getGroups(self):
@@ -176,15 +176,14 @@ class Order(models.Model):
     getGroups.short_description = 'Groups'
 
 """
-Clase grupo
+Clase elemento
 """
 
-class Group(models.Model):
-    name = models.CharField(max_length=200)
+class Item(models.Model):
     active = models.BooleanField(default=True)
-    orders = models.ManyToManyField("Order",blank=True)
-    avatar = models.ImageField(blank=True)
-    users = models.ManyToManyField("User",blank=True)
+    purchased = models.BooleanField(default=True)
+    amount = models.PositiveIntegerField(default=0)
+    product = models.ForeignKey("Product")
     created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
     modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
 
@@ -193,15 +192,45 @@ class Group(models.Model):
         if not self.id:
             self.created_at = datetime.datetime.today()
         self.modified_at = datetime.datetime.today()
-        return super(Group, self).save(*args, **kwargs)
+        return super(Item, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return str(self.id) + " " + self.name
+        return str(self.id)
 
-    def groupUsers(self):
-        return self.users.all()
-    groupUsers.short_description = "Users"
+    def getOrder(self):
+        return self.order_set.all()
+    getOrder.short_description = 'Order'
 
-    def groupOrders(self):
-        return self.orders.all()
-    groupOrders.short_description = "Orders"
+
+
+"""
+Clase producto
+"""
+
+class Product(models.Model):
+
+    UNITS = (
+        ('kg','Kilogramos'),
+        ('l','Litros')
+    )
+
+    name = models.CharField(max_length=200)
+    active = models.BooleanField(default=True)
+    avatar = models.ImageField(blank=True)
+    quantity = models.PositiveIntegerField(default= 0,blank=True)
+    measure = models.CharField(max_length=3, choices=UNITS,blank=True)
+    created_at = models.DateTimeField(default=datetime.datetime.now, editable=False)
+    modified_at = models.DateTimeField(default=datetime.datetime.now, editable=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = datetime.datetime.today()
+        self.modified_at = datetime.datetime.today()
+        return super(Product, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+    #introducir funciona para introducir nuevas unidades. -> subclase
+

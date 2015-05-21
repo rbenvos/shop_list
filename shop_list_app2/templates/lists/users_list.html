@@ -1,52 +1,53 @@
-<!DOCTYPE html>
-<html>
-{% include 'head.html' %}
-<body>
-    {% include 'menu.html' %}
-    <h1>Users</h1>
+{% include 'header.html' %}
 
-    <div>
-    <h3>Crear usuario</h3>
-    {{ message|safe }}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear usuario</button>
-    </form>
-    </div>
+<h1>Users</h1>
 
-    {% if users_list %}
-        <table  class="table table-condensed">
-            <tr>
-                <td>Id</td>
-                <td>Activo</td>
-                <td>Avatar</td>
-                <td>Nombre</td>
-                <td>Apellido</td>
-                <td>Email</td>
-                <td>Fecha creación</td>
-                <td>Fecha modificación</td>
-            </tr>
-        {% for user in users_list %}
-            <tr>
-                <td><a href="/shop_list2/users/{{user.id}}">{{ user.id}}</a></td>
-                {% if user.active %}
-                    <td class="success">{{ user.active}}</td>
-                {% else %}
-                    <td class="danger">{{ user.active}}</td>
-                {% endif %}
-                <td><a href="/shop_list2/users/{{user.id}}">{{ user.avatar}}</a></td>
-                <td><a href="/shop_list2/users/{{user.id}}">{{ user.name}}</a></td>
-                <td><a href="/shop_list2/users/{{user.id}}">{{ user.last_name}}</a></td>
-                <td><a href="/shop_list2/users/{{user.id}}">{{ user.email}}</a></td>
-                <td>{{ user.created_at}}</td>
-                <td>{{ user.modified_at}}</td>
-            </tr>
-        {% endfor %}
-        </table>
-    {% else %}
-        <p>No users are available.</p>
-    {% endif %}
-    <a href="/shop_list2">Atrás</a>
-</body>
-</html>
+<p class="bg-success">{{ message|safe }}</p>
+
+<button class="btn btn-default button-slidedown-add">Crear</button>
+
+<div class="text-slidedown-add">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear usuario</button>
+</form>
+</div>
+
+
+
+{% if users_list %}
+    <table  class="table table-condensed">
+        <tr>
+            <td>Id</td>
+            <td>Activo</td>
+            <td>Avatar</td>
+            <td>Nombre</td>
+            <td>Apellido</td>
+            <td>Email</td>
+            <td>Fecha creación</td>
+            <td>Fecha modificación</td>
+        </tr>
+    {% for user in users_list %}
+        <tr>
+            <td><a href="/shop_list2/users/{{user.id}}">{{ user.id}}</a></td>
+            {% if user.active %}
+                <td class="success">{{ user.active}}</td>
+            {% else %}
+                <td class="danger">{{ user.active}}</td>
+            {% endif %}
+            <td><a href="/shop_list2/users/{{user.id}}">{{ user.avatar}}</a></td>
+            <td><a href="/shop_list2/users/{{user.id}}">{{ user.name}}</a></td>
+            <td><a href="/shop_list2/users/{{user.id}}">{{ user.last_name}}</a></td>
+            <td><a href="/shop_list2/users/{{user.id}}">{{ user.email}}</a></td>
+            <td>{{ user.created_at}}</td>
+            <td>{{ user.modified_at}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No users are available.</p>
+{% endif %}
+<a href="/shop_list2">Atrás</a>
+
+{% include 'footer.html' %}

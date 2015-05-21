@@ -1,0 +1,41 @@
+{% include 'header.html' %}
+
+    <h1>Items</h1>
+
+    {% if items_list %}
+        <table class="table table-condensed">
+            <tr>
+                <td>Id</td>
+                <td>Activo</td>
+                <td>Comprado</td>
+                <td>Listado</td>
+                <td>Cantidad</td>
+                <td>Producto</td>
+                <td>Fecha creación</td>
+                <td>Fecha modificación</td>
+            </tr>
+        {% for item in items_list %}
+            <tr>
+                <td>{{ item.id}}</td>
+                <td>{{ item.active}}</td>
+                <td>{{ item.purchased}}</td>
+                {% if item.order_set.all %}
+                    {%for order in item.order_set.all %}
+                        <td><a href="/shop_list2/orders/{{order.id}}">{{ order.id}}</a></td>
+                    {% endfor %}
+                {% else %}
+                    <td> - </td>
+                {% endif %}
+                <td>{{ item.amount}}</td>
+                <td>{{ item.product}}</td>
+                <td>{{ item.created_at}}</td>
+                <td>{{ item.modified_at}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+    <a href="/shop_list2">Atrás</a>
+
+{% include 'footer.html' %}
