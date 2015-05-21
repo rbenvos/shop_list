@@ -1,7 +1,7 @@
 from django.contrib import admin
-
-# Register your models here.
 from shop_list_app2.models import User, Product, Group, Order, Phone, Item
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 """
 Administracion User
@@ -39,7 +39,12 @@ class UserAdmin(admin.ModelAdmin):
 """
 Administracion Product
 """
-class ProductAdmin(admin.ModelAdmin):
+class ProductResource(resources.ModelResource):
+    class Meta:
+        model = Product
+        exclude = ('active','avatar','quantity','measure','created_at','modified_at')
+
+class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ['id','active','avatar','name','quantity','measure','created_at','modified_at']
     list_display_links = ['id','name','avatar']
     list_filter = ['active','created_at','modified_at']
@@ -56,6 +61,10 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['id','name', 'last_name','email']
     actions=['make_active','make_desactive']
 
+    #Importador - Exportador
+    resource_class = ProductResource
+
+    #Funciones
     def make_active(modeladmin, request, queryset):
         queryset.update(active = True)
     make_active.short_description = "Mark selected as active"

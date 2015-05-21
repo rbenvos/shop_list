@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'shop_list_app',
     'shop_list_app2',
     'rest_framework',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
