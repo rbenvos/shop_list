@@ -4,12 +4,24 @@ from django.shortcuts import render
 from models import User, Group,Product, Order, Phone, Item
 from forms import UserForm, GroupForm, OrderForm,PhoneForm,ProductForm
 from django.views.generic import View, ListView
+import datetime
+import qsstats
 
 """
 DASHBOARD
 """
 
 def dashboard(request):
+    GOOGLE_API_KEY = 'clave'
+
+    qs = User.objects.all()
+    qss = qsstats.QuerySetStats(qs, 'created_at')
+
+    today = datetime.date.today()
+    last_month = today - datetime.timedelta(weeks=4)
+
+    users_time_series = qss.time_series(last_month, today)
+
     db_users_list = User.objects.all().order_by("-created_at")[:5]
     db_groups_list = Group.objects.all().order_by("-created_at")[:5]
     db_devices_list = Phone.objects.all().order_by("-created_at")[:5]
@@ -22,6 +34,8 @@ def dashboard(request):
                'db_orders_list': db_orders_list,
                'db_items_list': db_items_list,
                'db_products_list': db_products_list,
+               'qss':qss,
+               'users_time_series':users_time_series,
                }
     return render(request, 'dashboard.html',context)
 

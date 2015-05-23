@@ -1,6 +1,122 @@
 {% include 'header.html' %}
 
-    <h1 class="col-md-12">Dashboard</h1>
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Dashboard</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-male fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{db_users_list.count}}</div>
+                            <div>New Users!</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/shop_list2/users/">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{db_groups_list.count}}</div>
+                            <div>New Groups!</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/shop_list2/groups/">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-shopping-cart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{db_orders_list.count}}</div>
+                            <div>New Orders!</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/shop_list2/orders/">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-support fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{db_items_list.count}}</div>
+                            <div>Items today!</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/shop_list2/items/">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+     </div>
+            <!-- /.row -->
+
+    <p>Usuario creados en el ultimo mes: {{qss.this_month}}</p>
+    {% for time in users_time_series %}
+        {{ time.0|date:"d M" }}
+        {{time.1}}
+    {% endfor %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <div class="row">
+        <div class="col-lg-12 col-md-9">
+            <div id="tabla"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div id="tabla2"></div>
+        </div>
+    </div>
 
     <div class="row">
     <div class="col-md-2">
@@ -86,3 +202,102 @@
     </div>
 
 {% include 'footer.html' %}
+
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['corechart', 'bar']});
+        google.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+              var data = new google.visualization.DataTable();
+              data.addColumn('timeofday', 'Time of Day');
+              data.addColumn('number', 'Motivation Level');
+
+              data.addRows([
+                [{v: [8, 10, 10], f: '8 am'}, 1],
+                [{v: [9, 0, 0], f: '9 am'}, 2],
+                [{v: [10, 10, 10], f:'10 am'}, 3],
+                [{v: [11, 0, 0], f: '11 am'}, 4],
+                [{v: [12, 0, 0], f: '12 pm'}, 5],
+                [{v: [13, 0, 0], f: '1 pm'}, 6],
+                [{v: [14, 0, 0], f: '2 pm'}, 7],
+                [{v: [15, 0, 0], f: '3 pm'}, 8],
+                [{v: [16, 0, 0], f: '4 pm'}, 9],
+                [{v: [17, 0, 0], f: '5 pm'}, 10],
+                [{v: [18, 0, 0], f: '6 pm'}, 8],
+              ]);
+
+              var options = {
+                title: 'Motivation Level Throughout the Day',
+                hAxis: {
+                  title: 'Time of Day',
+                  format: 'h:mm a',
+                  viewWindow: {
+                    min: [7, 30, 0],
+                    max: [18, 30, 0]
+                  }
+                },
+                vAxis: {
+                  title: 'Rating (scale of 1-10)'
+                }
+              };
+
+              var chart = new google.visualization.ColumnChart(
+                document.getElementById('tabla2'));
+
+              chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(function() {
+        var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Día');
+            data.addColumn('number', 'Usuarios nuevos');
+            data.addRows({{ users_time_series|length }});
+
+        {% for s in users_time_series %}
+            data.setValue({{ forloop.counter0 }}, 0, '{{ s.0|date:"d M" }}');
+            data.setValue({{ forloop.counter0 }}, 1, {{ s.1 }});
+        {% endfor %}
+
+        var chart = new google.visualization.LineChart(document.getElementById('tabla'));
+        chart.draw(data, {width: 620, height: 200, legend:'none'});
+    });
+    </script>
+
+        <script type="text/javascript">
+      google.load("visualization", "1.1", {packages:["bar"]});
+      google.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['Galaxy', 'Distance', 'Brightness'],
+          ['Canis Major Dwarf', 8000, 23.3],
+          ['Sagittarius Dwarf', 24000, 4.5],
+          ['Ursa Major II Dwarf', 30000, 14.3],
+          ['Lg. Magellanic Cloud', 50000, 0.9],
+          ['Bootes I', 60000, 13.1]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Nearby galaxies',
+            subtitle: 'distance on the left, brightness on the right'
+          },
+          series: {
+            0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+            1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+          },
+          axes: {
+            y: {
+              distance: {label: 'parsecs'}, // Left y-axis.
+              brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
+            }
+          }
+        };
+
+      var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
+      chart.draw(data, options);
+    };
+    </script>

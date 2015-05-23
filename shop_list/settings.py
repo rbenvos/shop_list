@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'shop_list_app2',
     'rest_framework',
     'import_export',
+    'qsstats',
 )
 
 MIDDLEWARE_CLASSES = (
