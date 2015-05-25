@@ -285,6 +285,7 @@
         {% for s in users_time_series %}
             data.setValue({{ forloop.counter0 }}, 0, '{{ s.0|date:"d M" }}');
             data.setValue({{ forloop.counter0 }}, 1, {{ s.1 }});
+            data.setValue({{ forloop.counter0 }}, 2, {{ s.1 }});
         {% endfor %}
 
         var options = {
