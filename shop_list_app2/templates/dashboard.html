@@ -81,7 +81,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-support fa-5x"></i>
+                            <i class="fa fa-sitemap fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{db_items_list.count}}</div>
@@ -101,20 +101,45 @@
      </div>
             <!-- /.row -->
 
-    <p>Usuario creados en el ultimo mes: {{qss.this_month}}</p>
+   <!-- <p>Usuario creados en el ultimo mes: {{qss.this_month}}</p>
     {% for time in users_time_series %}
         {{ time.0|date:"d M" }}
         {{time.1}}
-    {% endfor %}
+    {% endfor %}-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <div class="row">
-        <div class="col-lg-12 col-md-9">
-            <div id="tabla"></div>
+        <div class="col-lg-8 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-line-chart fa-fw"></i> Numero usuarios
+                </div>
+                <div class="panel-body">
+                    <div id="tabla"></div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-line-chart fa-fw"></i> Numeros grupos
+                </div>
+                <div class="panel-body">
+                    <div id="tabla2"></div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div id="tabla2"></div>
+        <div class="col-lg-4 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Datos
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a class="list-group-item">Numero de usuarios totales: {{db_users_list.count}}</a>
+                        <a class="list-group-item">Numero de grupos totales: {{db_groups_list.count}}</a>
+                        <a class="list-group-item">Numero de dispositivos totales: {{db_devices_list.count}}</a>
+                        <a class="list-group-item">Numero de productos totales: {{db_products_list.count}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -214,9 +239,10 @@
               data.addColumn('number', 'Motivation Level');
 
               data.addRows([
-                [{v: [8, 10, 10], f: '8 am'}, 1],
+                [{v: [8, 0, 0], f: '8 am'}, 1],
+                [{v: [8, 0, 0], f: '8 am'}, 10],
                 [{v: [9, 0, 0], f: '9 am'}, 2],
-                [{v: [10, 10, 10], f:'10 am'}, 3],
+                [{v: [10, 0, 0], f:'10 am'}, 3],
                 [{v: [11, 0, 0], f: '11 am'}, 4],
                 [{v: [12, 0, 0], f: '12 pm'}, 5],
                 [{v: [13, 0, 0], f: '1 pm'}, 6],
@@ -261,8 +287,12 @@
             data.setValue({{ forloop.counter0 }}, 1, {{ s.1 }});
         {% endfor %}
 
+        var options = {
+                title: 'New users per day'
+              };
+
         var chart = new google.visualization.LineChart(document.getElementById('tabla'));
-        chart.draw(data, {width: 620, height: 200, legend:'none'});
+        chart.draw(data, options);
     });
     </script>
 
