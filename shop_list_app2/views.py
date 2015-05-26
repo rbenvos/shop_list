@@ -12,15 +12,34 @@ DASHBOARD
 """
 
 def dashboard(request):
-    GOOGLE_API_KEY = 'clave'
-
-    qs = User.objects.all()
-    qss = qsstats.QuerySetStats(qs, 'created_at')
 
     today = datetime.date.today()
-    last_month = today - datetime.timedelta(weeks=4)
+    last_week = today - datetime.timedelta(weeks=1)
 
-    users_time_series = qss.time_series(last_month, today)
+    qs_u = User.objects.all()
+    qss_u = qsstats.QuerySetStats(qs_u, 'created_at')
+
+    qs_g = Group.objects.all()
+    qss_g = qsstats.QuerySetStats(qs_g, 'created_at')
+
+    qs_d = Phone.objects.all()
+    qss_d = qsstats.QuerySetStats(qs_d, 'created_at')
+
+    qs_p = Product.objects.all()
+    qss_p = qsstats.QuerySetStats(qs_p, 'created_at')
+
+    qs_o = Order.objects.all()
+    qss_o = qsstats.QuerySetStats(qs_o, 'created_at')
+
+    qs_i = Item.objects.all()
+    qss_i = qsstats.QuerySetStats(qs_i, 'created_at')
+
+    users_time_series = qss_u.time_series(last_week, today)
+    groups_time_series = qss_g.time_series(last_week, today)
+    devices_time_series = qss_d.time_series(last_week, today)
+    products_time_series = qss_p.time_series(last_week, today)
+    orders_time_series = qss_o.time_series(last_week, today)
+    items_time_series = qss_i.time_series(last_week, today)
 
     db_users_list = User.objects.all().order_by("-created_at")[:5]
     db_groups_list = Group.objects.all().order_by("-created_at")[:5]
@@ -34,8 +53,12 @@ def dashboard(request):
                'db_orders_list': db_orders_list,
                'db_items_list': db_items_list,
                'db_products_list': db_products_list,
-               'qss':qss,
                'users_time_series':users_time_series,
+               'groups_time_series':groups_time_series,
+               'devices_time_series':devices_time_series,
+               'products_time_series':products_time_series,
+               'orders_time_series':orders_time_series,
+               'items_time_series':items_time_series,
                }
     return render(request, 'dashboard.html',context)
 
