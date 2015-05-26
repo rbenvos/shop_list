@@ -111,7 +111,7 @@
         <div class="col-lg-8 col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-line-chart fa-fw"></i> Numero usuarios
+                    <i class="fa fa-line-chart fa-fw"></i> Users charts
                 </div>
                 <div class="panel-body">
                     <div id="tabla"></div>
@@ -119,7 +119,7 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-line-chart fa-fw"></i> Numeros grupos
+                    <i class="fa fa-line-chart fa-fw"></i> Orders charts
                 </div>
                 <div class="panel-body">
                     <div id="tabla2"></div>
@@ -129,7 +129,7 @@
         <div class="col-lg-4 col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Datos
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Total data
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -228,107 +228,86 @@
 
 {% include 'footer.html' %}
 
+    <!-- Datos listados, productos e items-->
     <script type="text/javascript">
         google.load('visualization', '1', {packages: ['corechart', 'bar']});
         google.setOnLoadCallback(drawBasic);
 
         function drawBasic() {
 
-              var data = new google.visualization.DataTable();
-              data.addColumn('timeofday', 'Time of Day');
-              data.addColumn('number', 'Motivation Level');
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Time of Day');
+            data.addColumn('number', 'Productos nuevos');
+            data.addColumn('number', 'Listados nuevos');
+            data.addColumn('number', 'Items nuevos');
+            data.addRows({{ users_time_series|length }});
 
-              data.addRows([
-                [{v: [8, 0, 0], f: '8 am'}, 1],
-                [{v: [8, 0, 0], f: '8 am'}, 10],
-                [{v: [9, 0, 0], f: '9 am'}, 2],
-                [{v: [10, 0, 0], f:'10 am'}, 3],
-                [{v: [11, 0, 0], f: '11 am'}, 4],
-                [{v: [12, 0, 0], f: '12 pm'}, 5],
-                [{v: [13, 0, 0], f: '1 pm'}, 6],
-                [{v: [14, 0, 0], f: '2 pm'}, 7],
-                [{v: [15, 0, 0], f: '3 pm'}, 8],
-                [{v: [16, 0, 0], f: '4 pm'}, 9],
-                [{v: [17, 0, 0], f: '5 pm'}, 10],
-                [{v: [18, 0, 0], f: '6 pm'}, 8],
-              ]);
+            {% for p in products_time_series  %}
+                data.setValue({{ forloop.counter0 }}, 0, '{{ p.0|date:"d M" }}');
+                data.setValue({{ forloop.counter0 }}, 1, {{ p.1 }});
+            {% endfor %}
+
+            {% for o in orders_time_series  %}
+                data.setValue({{ forloop.counter0 }}, 2, {{ o.1 }});
+            {% endfor %}
+
+            {% for i in items_time_series  %}
+                data.setValue({{ forloop.counter0 }}, 3, {{ i.1 }});
+            {% endfor %}
 
               var options = {
-                title: 'Motivation Level Throughout the Day',
+                title: 'New orders, products, items per day in week',
+                colors: ['#5bc0de','#f0ad4e','#d9534f'],
+                legend: {
+                    position: 'bottom',
+                },
                 hAxis: {
                   title: 'Time of Day',
-                  format: 'h:mm a',
-                  viewWindow: {
-                    min: [7, 30, 0],
-                    max: [18, 30, 0]
-                  }
                 },
                 vAxis: {
-                  title: 'Rating (scale of 1-10)'
+                  title: 'Numbers',
                 }
               };
 
-              var chart = new google.visualization.ColumnChart(
-                document.getElementById('tabla2'));
+              var chart = new google.visualization.ColumnChart(document.getElementById('tabla2'));
 
               chart.draw(data, options);
         }
     </script>
+
+    <!-- Datos usuarios, grupos y dispositivos -->
     <script type="text/javascript">
         google.load("visualization", "1", {packages:["corechart"]});
         google.setOnLoadCallback(function() {
         var data = new google.visualization.DataTable();
             data.addColumn('string', 'Día');
             data.addColumn('number', 'Usuarios nuevos');
+            data.addColumn('number', 'Grupos nuevos');
+            data.addColumn('number', 'Dispositivos nuevos');
             data.addRows({{ users_time_series|length }});
 
         {% for s in users_time_series %}
             data.setValue({{ forloop.counter0 }}, 0, '{{ s.0|date:"d M" }}');
             data.setValue({{ forloop.counter0 }}, 1, {{ s.1 }});
-            data.setValue({{ forloop.counter0 }}, 2, {{ s.1 }});
+        {% endfor %}
+
+        {% for g in groups_time_series  %}
+            data.setValue({{ forloop.counter0 }}, 2, {{ g.1 }});
+        {% endfor %}
+
+        {% for d in devices_time_series  %}
+            data.setValue({{ forloop.counter0 }}, 3, {{ d.1 }});
         {% endfor %}
 
         var options = {
-                title: 'New users per day'
+                title: 'New users, groups and devices per day in week',
+                colors: ['#428bca', '#5cb85c','#B8B45C'],
+                legend: {
+                    position: 'bottom',
+                },
               };
 
         var chart = new google.visualization.LineChart(document.getElementById('tabla'));
         chart.draw(data, options);
     });
-    </script>
-
-        <script type="text/javascript">
-      google.load("visualization", "1.1", {packages:["bar"]});
-      google.setOnLoadCallback(drawStuff);
-
-      function drawStuff() {
-        var data = new google.visualization.arrayToDataTable([
-          ['Galaxy', 'Distance', 'Brightness'],
-          ['Canis Major Dwarf', 8000, 23.3],
-          ['Sagittarius Dwarf', 24000, 4.5],
-          ['Ursa Major II Dwarf', 30000, 14.3],
-          ['Lg. Magellanic Cloud', 50000, 0.9],
-          ['Bootes I', 60000, 13.1]
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Nearby galaxies',
-            subtitle: 'distance on the left, brightness on the right'
-          },
-          series: {
-            0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
-            1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
-          },
-          axes: {
-            y: {
-              distance: {label: 'parsecs'}, // Left y-axis.
-              brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
-            }
-          }
-        };
-
-      var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
-      chart.draw(data, options);
-    };
     </script>
